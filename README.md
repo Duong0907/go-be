@@ -13,7 +13,7 @@ Some features:
 
 ## 2. How to run this project?
 
-### Run using Docker
+### Run using Docker (bug: can not get data after seeding)
 - Install and start Docker on your machine
 
 - Start Docker Compose
@@ -27,6 +27,8 @@ docker compose up
 make migrate
 make seed
 ```
+
+- The API is now available at `http://localhost:8080`
 
 ### Run manually
 - Install NodeJS, Make Utils on your machine
@@ -64,5 +66,7 @@ make seed
 npm run dev
 ```
 
+- The API is now available at `http://localhost:8080`
+
 ## 3. Deployment
-The backend is deploy to [this url](link).
+The backend is deploy to `https://go-be.onrender.com`.
