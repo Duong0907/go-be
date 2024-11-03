@@ -1,0 +1,48 @@
+services:
+  go-db:
+    container_name: go-db
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5434:5432
+    hostname: go-db
+    # networks: 
+    #   - go-test
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U postgres -d postgres'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  go-be:
+    container_name: go-be
+    image: duong0907/go-be:1.0.0
+    hostname: go-be
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: go-db
+      DB_USER: postgres
+      DB_PASSWORD: mysecretpassword
+      DB: postgres
+      DB_DIALECT: postgres
+      DB_PORT: 5432
+      SSL_MODE: false
+      NODE_ENV: development
+    ports: 
+      - 8080:8080
+    # networks: 
+    #   - go-test
+    depends_on:
+      go-db:
+        condition: service_healthy
+
+# networks: 
+#   go-test: 
+#     driver: bridge
